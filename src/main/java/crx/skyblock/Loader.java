@@ -2,13 +2,16 @@ package crx.skyblock;
 
 import cn.nukkit.plugin.PluginBase;
 import crx.skyblock.listener.ChatListener;
+import crx.skyblock.listener.ConnectionListener;
 import crx.skyblock.module.MinioModule;
 import crx.skyblock.module.NatsModule;
 import lombok.Getter;
 
 public class Loader extends PluginBase {
 
+    @Getter
     private NatsModule natsModule;
+    @Getter
     private MinioModule minioModule;
     @Getter
     private static Loader instance;
@@ -34,6 +37,7 @@ public class Loader extends PluginBase {
 
     private void initHandlers(){
         new ChatListener(this.natsModule.getChatService());
+        new ConnectionListener();
     }
 
     @Override
