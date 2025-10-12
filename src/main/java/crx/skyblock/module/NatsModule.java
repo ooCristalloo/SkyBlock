@@ -1,11 +1,11 @@
 package crx.skyblock.module;
 
 import cn.nukkit.Server;
-import crx.skyblock.service.GlobalChatService;
+import crx.skyblock.service.nats.GlobalChatService;
 import crx.skyblock.module.config.NatsConfig;
-import crx.skyblock.service.NatsConnectionService;
-import crx.skyblock.service.impl.NatsConnectionServiceImpl;
-import crx.skyblock.service.impl.GlobalChatServiceImpl;
+import crx.skyblock.service.nats.NatsConnectionService;
+import crx.skyblock.service.nats.NatsConnectionServiceImpl;
+import crx.skyblock.service.nats.GlobalChatServiceImpl;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

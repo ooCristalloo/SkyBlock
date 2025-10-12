@@ -1,7 +1,6 @@
-package crx.skyblock.service.impl;
+package crx.skyblock.service.nats;
 
 import crx.skyblock.module.config.NatsConfig;
-import crx.skyblock.service.NatsConnectionService;
 import io.nats.client.*;
 import lombok.extern.slf4j.Slf4j;
 

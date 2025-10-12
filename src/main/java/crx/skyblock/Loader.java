@@ -41,5 +41,8 @@ public class Loader extends PluginBase {
         if (natsModule != null) {
             natsModule.shutdown();
         }
+        if (minioModule != null) {
+            minioModule.shutdown();
+        }
     }
 }

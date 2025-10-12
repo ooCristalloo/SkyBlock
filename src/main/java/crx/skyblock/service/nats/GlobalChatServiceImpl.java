@@ -1,9 +1,7 @@
-package crx.skyblock.service.impl;
+package crx.skyblock.service.nats;
 
 import cn.nukkit.Server;
 import crx.skyblock.module.config.NatsConfig;
-import crx.skyblock.service.GlobalChatService;
-import crx.skyblock.service.NatsConnectionService;
 import io.nats.client.Dispatcher;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class GlobalChatServiceImpl implements GlobalChatService {
+
     private final NatsConnectionService natsService;
     private final NatsConfig config;
     

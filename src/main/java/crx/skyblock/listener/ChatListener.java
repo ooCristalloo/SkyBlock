@@ -2,7 +2,7 @@ package crx.skyblock.listener;
 
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.player.PlayerChatEvent;
-import crx.skyblock.service.GlobalChatService;
+import crx.skyblock.service.nats.GlobalChatService;
 
 public class ChatListener extends MainListener {
 

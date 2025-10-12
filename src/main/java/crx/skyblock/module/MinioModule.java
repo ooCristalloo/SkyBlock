@@ -1,22 +1,37 @@
 package crx.skyblock.module;
 
-import io.minio.MinioClient;
+import crx.skyblock.module.config.MinioConfig;
+import crx.skyblock.service.minio.MinioConnectionServiceImpl;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MinioModule {
 
+    @Getter
+    private MinioConnectionServiceImpl minioService;
+
     public void initialize() {
         try {
-            MinioClient minioClient = MinioClient.builder()
-                    .endpoint("http://172.17.0.2:9000")
-                    .credentials("minio_root", "minio_password_R6gzFszY$u9@>@:8")
-                    .build();
+            MinioConfig config = new MinioConfig(
+                    "https://172.17.0.2:9000",
+                    "minio_root",
+                    "minio_password_R6gzFszY$u9@>@:8"
+            );
 
-            minioClient.listBuckets();
-            log.info("Connection MinIO successfully");
+            this.minioService = new MinioConnectionServiceImpl(config);
         } catch (Exception e) {
             log.error("Failed to connect to Minio", e);
+        }
+    }
+
+    public void shutdown() {
+        if (minioService != null) {
+            try {
+                minioService.close();
+            } catch (Exception e) {
+                log.warn("Failed to close MinIO module", e);
+            }
         }
     }
 }
