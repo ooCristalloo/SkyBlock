@@ -1,8 +1,8 @@
-package crx.skyblock.listeners;
+package crx.skyblock.listener;
 
 import cn.nukkit.Server;
 import cn.nukkit.event.Listener;
-import crx.skyblock.GetterInterface;
+import crx.skyblock.util.GetterInterface;
 
 public class MainListener implements Listener, GetterInterface {
 

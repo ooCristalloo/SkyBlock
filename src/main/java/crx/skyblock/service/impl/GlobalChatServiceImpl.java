@@ -1,8 +1,9 @@
-package crx.skyblock.service.nats.services;
+package crx.skyblock.service.impl;
 
 import cn.nukkit.Server;
-import crx.skyblock.service.nats.NatsConfig;
-import crx.skyblock.service.nats.NatsConnectionService;
+import crx.skyblock.module.config.NatsConfig;
+import crx.skyblock.service.GlobalChatService;
+import crx.skyblock.service.NatsConnectionService;
 import io.nats.client.Dispatcher;
 import lombok.extern.slf4j.Slf4j;
 

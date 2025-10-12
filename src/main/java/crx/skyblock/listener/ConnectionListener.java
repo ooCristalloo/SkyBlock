@@ -1,4 +1,4 @@
-package crx.skyblock.listeners;
+package crx.skyblock.listener;
 
 public class ConnectionListener {
 }

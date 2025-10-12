@@ -1,4 +1,4 @@
-package crx.skyblock.service;
+package crx.skyblock.module;
 
 public class MinioModule {
 

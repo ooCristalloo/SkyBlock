@@ -1,9 +1,9 @@
 package crx.skyblock;
 
 import cn.nukkit.plugin.PluginBase;
-import crx.skyblock.listeners.ChatListener;
-import crx.skyblock.service.MinioModule;
-import crx.skyblock.service.NatsModule;
+import crx.skyblock.listener.ChatListener;
+import crx.skyblock.module.MinioModule;
+import crx.skyblock.module.NatsModule;
 import lombok.Getter;
 
 public class Loader extends PluginBase {

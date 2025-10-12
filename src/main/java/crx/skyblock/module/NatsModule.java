@@ -1,14 +1,18 @@
-package crx.skyblock.service;
+package crx.skyblock.module;
 
 import cn.nukkit.Server;
-import crx.skyblock.service.nats.NatsConfig;
-import crx.skyblock.service.nats.NatsConnectionService;
-import crx.skyblock.service.nats.services.GlobalChatService;
-import crx.skyblock.service.nats.services.GlobalChatServiceImpl;
+import crx.skyblock.service.GlobalChatService;
+import crx.skyblock.module.config.NatsConfig;
+import crx.skyblock.service.NatsConnectionService;
+import crx.skyblock.service.impl.NatsConnectionServiceImpl;
+import crx.skyblock.service.impl.GlobalChatServiceImpl;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NatsModule {
 
+    private static final Logger log = LoggerFactory.getLogger(NatsModule.class);
     private NatsConnectionService natsService;
     @Getter
     private GlobalChatService chatService;
@@ -21,7 +25,7 @@ public class NatsModule {
                 "minecraft.global.chat"
             );
             
-            this.natsService = new NatsConnectionService(config);
+            this.natsService = new NatsConnectionServiceImpl(config);
             this.chatService = new GlobalChatServiceImpl(natsService, config);
                 
         } catch (Exception e) {
@@ -31,7 +35,11 @@ public class NatsModule {
     
     public void shutdown() {
         if (natsService != null) {
-            natsService.close();
+            try {
+                natsService.close();
+            } catch (Exception e) {
+                log.warn("Failed to close NATS module", e);
+            }
         }
     }
 }

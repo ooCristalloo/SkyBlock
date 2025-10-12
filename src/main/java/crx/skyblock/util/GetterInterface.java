@@ -1,6 +1,7 @@
-package crx.skyblock;
+package crx.skyblock.util;
 
 import cn.nukkit.Server;
+import crx.skyblock.Loader;
 
 public interface GetterInterface {
 

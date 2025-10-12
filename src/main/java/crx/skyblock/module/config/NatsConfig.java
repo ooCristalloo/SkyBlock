@@ -1,4 +1,4 @@
-package crx.skyblock.service.nats;
+package crx.skyblock.module.config;
 
 import java.util.Objects;
 

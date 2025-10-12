@@ -1,16 +1,18 @@
-package crx.skyblock.service.nats;
+package crx.skyblock.service.impl;
 
+import crx.skyblock.module.config.NatsConfig;
+import crx.skyblock.service.NatsConnectionService;
 import io.nats.client.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
 @Slf4j
-public class NatsConnectionService implements AutoCloseable {
+public class NatsConnectionServiceImpl implements NatsConnectionService {
     private final Connection connection;
     private final NatsConfig config;
     
-    public NatsConnectionService(NatsConfig config) {
+    public NatsConnectionServiceImpl(NatsConfig config) {
         this.config = config;
         this.connection = createConnection();
     }
@@ -30,7 +32,8 @@ public class NatsConnectionService implements AutoCloseable {
             throw new RuntimeException("NATS connection failed", e);
         }
     }
-    
+
+    @Override
     public void publish(String subject, byte[] data) {
         try {
             connection.publish(subject, data);
@@ -38,7 +41,8 @@ public class NatsConnectionService implements AutoCloseable {
             log.warn("Failed to publish message to " + subject + ": " + e.getMessage());
         }
     }
-    
+
+    @Override
     public Dispatcher createDispatcher(MessageHandler handler) {
         return connection.createDispatcher(handler);
     }
@@ -54,7 +58,8 @@ public class NatsConnectionService implements AutoCloseable {
             }
         }
     }
-    
+
+    @Override
     public boolean isConnected() {
         return connection != null && Connection.Status.CONNECTED.equals(connection.getStatus());
     }
