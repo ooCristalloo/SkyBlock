@@ -1,14 +1,12 @@
 package crx.skyblock.service.nats;
 
 import io.nats.client.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
+@Slf4j
 public class NatsConnectionService implements AutoCloseable {
-
-    private static final Logger LOGGER = Logger.getLogger(NatsConnectionService.class.getName());
-    
     private final Connection connection;
     private final NatsConfig config;
     
@@ -23,12 +21,12 @@ public class NatsConnectionService implements AutoCloseable {
                 .server(config.getServerUrl())
                 .connectionName(config.getRealmId())
                 .maxReconnects(-1)
-                .connectionListener((conn, event) -> LOGGER.info("NATS connection event: " + event))
+                .connectionListener((conn, event) -> log.info("NATS connection event: " + event))
                 .build();
                 
             return Nats.connect(options);
         } catch (IOException | InterruptedException e) {
-            LOGGER.severe("Failed to connect to NATS: " + e.getMessage());
+            log.error("Failed to connect to NATS: " + e.getMessage());
             throw new RuntimeException("NATS connection failed", e);
         }
     }
@@ -37,7 +35,7 @@ public class NatsConnectionService implements AutoCloseable {
         try {
             connection.publish(subject, data);
         } catch (Exception e) {
-            LOGGER.warning("Failed to publish message to " + subject + ": " + e.getMessage());
+            log.warn("Failed to publish message to " + subject + ": " + e.getMessage());
         }
     }
     
@@ -52,7 +50,7 @@ public class NatsConnectionService implements AutoCloseable {
                 connection.close();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                LOGGER.warning("Interrupted while closing NATS connection");
+                log.warn("Interrupted while closing NATS connection");
             }
         }
     }

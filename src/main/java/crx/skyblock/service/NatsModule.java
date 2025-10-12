@@ -4,6 +4,7 @@ import cn.nukkit.Server;
 import crx.skyblock.service.nats.NatsConfig;
 import crx.skyblock.service.nats.NatsConnectionService;
 import crx.skyblock.service.nats.services.GlobalChatService;
+import crx.skyblock.service.nats.services.GlobalChatServiceImpl;
 import lombok.Getter;
 
 public class NatsModule {
@@ -21,7 +22,7 @@ public class NatsModule {
             );
             
             this.natsService = new NatsConnectionService(config);
-            this.chatService = new GlobalChatService(natsService, config);
+            this.chatService = new GlobalChatServiceImpl(natsService, config);
                 
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize NATS module", e);
