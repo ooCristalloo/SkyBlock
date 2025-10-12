@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 public class NatsModule {
 
     private static final Logger log = LoggerFactory.getLogger(NatsModule.class);
+    @Getter
     private NatsConnectionService natsService;
     @Getter
     private GlobalChatService chatService;

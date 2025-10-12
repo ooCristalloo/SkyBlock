@@ -2,13 +2,16 @@ package crx.skyblock.service.nats;
 
 import crx.skyblock.module.config.NatsConfig;
 import io.nats.client.*;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
 @Slf4j
 public class NatsConnectionServiceImpl implements NatsConnectionService {
+
     private final Connection connection;
+    @Getter
     private final NatsConfig config;
     
     public NatsConnectionServiceImpl(NatsConfig config) {

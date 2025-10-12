@@ -1,7 +1,5 @@
 package crx.skyblock.module.config;
 
-import io.minio.MinioClient;
-
 import java.util.Objects;
 
 public class MinioConfig {
