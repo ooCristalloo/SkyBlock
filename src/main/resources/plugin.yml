@@ -3,3 +3,8 @@ version: "1.0.0"
 api: ["1.0.0"]
 author: CristalixBE
 main: crx.skyblock.Loader
+
+depend:
+  - "Sunny"
+  - "FormConstructor"
+  - "JOOQConnector"
