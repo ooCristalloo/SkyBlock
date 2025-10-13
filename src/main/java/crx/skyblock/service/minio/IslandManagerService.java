@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Comparator;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 public class IslandManagerService implements GetterInterface {
@@ -114,29 +115,31 @@ public class IslandManagerService implements GetterInterface {
     }
 
     public void uploadIsland(String islandName) {
-        Server.getInstance().getLevelByName(islandName).save();
+        CompletableFuture.runAsync(() -> {
+            Server.getInstance().getLevelByName(islandName).save(true);
+            Server.getInstance().getScheduler().scheduleDelayedTask(() -> {
+                Path targetFolder = Paths.get("/home/users/konovalov/skyblock/" + this.getNatsModule().getNatsService().getConfig().getRealmId() + "/worlds/" + islandName);
 
-        Server.getInstance().getScheduler().scheduleDelayedTask(() -> {
-            Path targetFolder = Paths.get("/home/users/konovalov/skyblock/" + this.getNatsModule().getNatsService().getConfig().getRealmId() + "/worlds/" + islandName);
+                if (Files.exists(targetFolder) && Files.isDirectory(targetFolder)) {
+                    try {
+                        Files.walk(targetFolder)
+                                .filter(Files::isRegularFile)
+                                .forEach(file -> uploadFileToMinio(file, targetFolder, islandName));
 
-            if (Files.exists(targetFolder) && Files.isDirectory(targetFolder)) {
-                try {
-                    Files.walk(targetFolder)
-                            .filter(Files::isRegularFile)
-                            .forEach(file -> uploadFileToMinio(file, targetFolder, islandName));
+                        System.out.println("Folder " + islandName + " upload success");
 
-                    System.out.println("Folder " + islandName + " upload success");
+                        deleteFolder(targetFolder);
+                        System.out.println("Local folder " + islandName + " deleted successfully");
 
-                    deleteFolder(targetFolder);
-                    System.out.println("Local folder " + islandName + " deleted successfully");
-
-                } catch (IOException e) {
-                    System.err.println("Error read folder: " + e.getMessage());
+                    } catch (IOException e) {
+                        System.err.println("Error read folder: " + e.getMessage());
+                    }
+                } else {
+                    System.out.println("Folder " + islandName + " does not exist");
                 }
-            } else {
-                System.out.println("Folder " + islandName + " does not exist");
-            }
-        }, 5);
+            }, 5);
+        });
+
     }
 
     private void deleteFolder(Path folder) {
