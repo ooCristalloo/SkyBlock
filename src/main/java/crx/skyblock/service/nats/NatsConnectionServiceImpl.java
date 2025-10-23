@@ -1,8 +1,7 @@
 package crx.skyblock.service.nats;
 
-import crx.skyblock.module.config.NatsConfig;
+import cn.nukkit.Server;
 import io.nats.client.*;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -11,24 +10,18 @@ import java.io.IOException;
 public class NatsConnectionServiceImpl implements NatsConnectionService {
 
     private final Connection connection;
-    @Getter
-    private final NatsConfig config;
     
-    public NatsConnectionServiceImpl(NatsConfig config) {
-        this.config = config;
-        this.connection = createConnection();
-    }
-    
-    private Connection createConnection() {
+    public NatsConnectionServiceImpl(String natsUrl) {
+
         try {
             Options options = new Options.Builder()
-                .server(config.getServerUrl())
-                .connectionName(config.getRealmId())
-                .maxReconnects(-1)
-                .connectionListener((conn, event) -> log.info("NATS connection event: " + event))
-                .build();
-                
-            return Nats.connect(options);
+                    .server(natsUrl)
+                    .connectionName(Server.getInstance().getSettings().general().motd())
+                    .maxReconnects(-1)
+                    .connectionListener((conn, event) -> log.info("NATS connection event: " + event))
+                    .build();
+
+            this.connection = Nats.connect(options);
         } catch (IOException | InterruptedException e) {
             log.error("Failed to connect to NATS: " + e.getMessage());
             throw new RuntimeException("NATS connection failed", e);
@@ -64,5 +57,10 @@ public class NatsConnectionServiceImpl implements NatsConnectionService {
     @Override
     public boolean isConnected() {
         return connection != null && Connection.Status.CONNECTED.equals(connection.getStatus());
+    }
+
+    @Override
+    public String getRealmId() {
+        return "";
     }
 }

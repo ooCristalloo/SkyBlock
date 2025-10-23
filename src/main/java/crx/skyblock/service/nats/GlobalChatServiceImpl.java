@@ -1,7 +1,6 @@
 package crx.skyblock.service.nats;
 
 import cn.nukkit.Server;
-import crx.skyblock.module.config.NatsConfig;
 import io.nats.client.Dispatcher;
 import lombok.extern.slf4j.Slf4j;
 
@@ -9,13 +8,12 @@ import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class GlobalChatServiceImpl implements GlobalChatService {
+    private static final String NATS_SUBSCRIBE_ID = "skyblock.global.chat";
 
     private final NatsConnectionService natsService;
-    private final NatsConfig config;
     
-    public GlobalChatServiceImpl(NatsConnectionService natsService, NatsConfig config) {
+    public GlobalChatServiceImpl(NatsConnectionService natsService) {
         this.natsService = natsService;
-        this.config = config;
         setupChatSubscription();
     }
     
@@ -25,15 +23,15 @@ public class GlobalChatServiceImpl implements GlobalChatService {
             broadcast(message);
         });
         
-        dispatcher.subscribe(config.getChatSubject());
-        log.info("Subscribed to global chat: " + config.getChatSubject());
+        dispatcher.subscribe(NATS_SUBSCRIBE_ID);
+        log.info("Subscribed to global chat: " + NATS_SUBSCRIBE_ID);
     }
 
     @Override
     public void sendChatMessage(String playerName, String message) {
-        String formattedMessage = String.format("[%s] %s: %s", config.getRealmId(), playerName, message);
+        String formattedMessage = String.format("[%s] %s: %s", natsService.getRealmId(), playerName, message);
         
-        natsService.publish(config.getChatSubject(), formattedMessage.getBytes(StandardCharsets.UTF_8));
+        natsService.publish(NATS_SUBSCRIBE_ID, formattedMessage.getBytes(StandardCharsets.UTF_8));
 
         log.debug("Sent chat message from " + playerName);
     }

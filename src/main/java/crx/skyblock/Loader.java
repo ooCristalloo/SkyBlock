@@ -1,11 +1,14 @@
 package crx.skyblock;
 
 import cn.nukkit.plugin.PluginBase;
+import cn.nukkit.utils.ConfigSection;
 import crx.skyblock.listener.ChatListener;
 import crx.skyblock.listener.ConnectionListener;
 import crx.skyblock.module.MinioModule;
 import crx.skyblock.module.NatsModule;
 import lombok.Getter;
+
+import java.io.File;
 
 public class Loader extends PluginBase {
 
@@ -15,6 +18,11 @@ public class Loader extends PluginBase {
     private MinioModule minioModule;
     @Getter
     private static Loader instance;
+
+    @Override
+    public void onLoad() {
+        this.saveDefaultConfig();
+    }
 
     @Override
     public void onEnable() {
@@ -27,12 +35,16 @@ public class Loader extends PluginBase {
 
     private void initNats(){
         this.natsModule = new NatsModule();
-        this.natsModule.initialize();
+        this.natsModule.initialize(this.getConfig().getString("nats-url"));
     }
 
     private void initMinio(){
+        final ConfigSection section = this.getConfig().getSection("minio");
         this.minioModule = new MinioModule();
-        this.minioModule.initialize();
+        this.minioModule.initialize(
+                section.getString("url"),  section.getString("username"), section.getString("password"),
+                new File(this.getConfig().getString("template-island")).toPath()
+        );
     }
 
     private void initHandlers(){

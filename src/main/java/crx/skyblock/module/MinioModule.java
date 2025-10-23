@@ -1,29 +1,26 @@
 package crx.skyblock.module;
 
-import crx.skyblock.module.config.MinioConfig;
-import crx.skyblock.service.minio.IslandManagerService;
+import crx.skyblock.service.minio.IslandsService;
+import crx.skyblock.service.minio.IslandsServiceImpl;
+import crx.skyblock.service.minio.MinioConnectionService;
 import crx.skyblock.service.minio.MinioConnectionServiceImpl;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+
+import java.nio.file.Path;
 
 @Slf4j
 public class MinioModule {
 
     @Getter
-    private MinioConnectionServiceImpl minioService;
+    private MinioConnectionService minioService;
     @Getter
-    private IslandManagerService islandManagerService;
+    private IslandsService islandManagerService;
 
-    public void initialize() {
+    public void initialize(String url, String username, String password, Path templateIsland) {
         try {
-            MinioConfig config = new MinioConfig(
-                    "http://172.17.0.2:9000",
-                    "minio_root",
-                    "minio_password"
-            );
-
-            this.minioService = new MinioConnectionServiceImpl(config);
-            this.islandManagerService = new IslandManagerService(this.minioService);
+            this.minioService = new MinioConnectionServiceImpl(url, username, password);
+            this.islandManagerService = new IslandsServiceImpl(this.minioService, templateIsland);
         } catch (Exception e) {
             log.error("Failed to connect to Minio", e);
         }

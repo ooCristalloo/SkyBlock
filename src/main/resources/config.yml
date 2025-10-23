@@ -1,0 +1,6 @@
+nats-url: "nats://149.202.89.181:4222"
+
+minio:
+  url: "http://172.17.0.2:9000"
+  username: "minio_root"
+  password: "minio_password"

@@ -1,8 +1,6 @@
 package crx.skyblock.module;
 
-import cn.nukkit.Server;
 import crx.skyblock.service.nats.GlobalChatService;
-import crx.skyblock.module.config.NatsConfig;
 import crx.skyblock.service.nats.NatsConnectionService;
 import crx.skyblock.service.nats.NatsConnectionServiceImpl;
 import crx.skyblock.service.nats.GlobalChatServiceImpl;
@@ -18,16 +16,10 @@ public class NatsModule {
     @Getter
     private GlobalChatService chatService;
     
-    public void initialize() {
+    public void initialize(String url) {
         try {
-            NatsConfig config = new NatsConfig(
-                "nats://149.202.89.181:4222",
-                    Server.getInstance().getSettings().general().motd(),
-                "minecraft.global.chat"
-            );
-            
-            this.natsService = new NatsConnectionServiceImpl(config);
-            this.chatService = new GlobalChatServiceImpl(natsService, config);
+            this.natsService = new NatsConnectionServiceImpl(url);
+            this.chatService = new GlobalChatServiceImpl(natsService);
                 
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize NATS module", e);
