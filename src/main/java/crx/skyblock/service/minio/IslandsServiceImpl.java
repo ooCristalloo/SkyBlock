@@ -3,6 +3,7 @@ package crx.skyblock.service.minio;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import crx.skyblock.Loader;
+import crx.skyblock.util.FileUtil;
 import crx.skyblock.util.GetterInterface;
 import io.minio.DownloadObjectArgs;
 import io.minio.ListObjectsArgs;
@@ -26,9 +27,9 @@ public class IslandsServiceImpl implements IslandsService, GetterInterface {
     @Getter
     private final MinioConnectionService minioService;
     
-    private final Path templateIsland;
+    private final File templateIsland;
 
-    public IslandsServiceImpl(MinioConnectionService minioService, Path templateIsland) {
+    public IslandsServiceImpl(MinioConnectionService minioService, File templateIsland) {
         this.minioService = minioService;
         this.templateIsland = templateIsland;
     }
@@ -50,7 +51,7 @@ public class IslandsServiceImpl implements IslandsService, GetterInterface {
     @Override
     public boolean createIsland(String islandName) {
         try {
-            Files.copy(this.templateIsland, new File(worlds, islandName).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            FileUtil.copy(this.templateIsland, new File(worlds, islandName));
             return true;
         } catch (Exception e) {
             log.error("Island failed to create island {}", islandName, e);
@@ -111,7 +112,7 @@ public class IslandsServiceImpl implements IslandsService, GetterInterface {
                                 .filter(Files::isRegularFile)
                                 .forEach(file -> uploadFileToMinio(file, targetFolder.toPath(), islandName));
 
-                        Files.deleteIfExists(targetFolder.toPath());
+                        FileUtil.delete(targetFolder);
                     } catch (IOException e) {
                         log.error("Island failed to upload island {}", islandName, e);
                     }

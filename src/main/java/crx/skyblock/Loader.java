@@ -43,7 +43,7 @@ public class Loader extends PluginBase {
         this.minioModule = new MinioModule();
         this.minioModule.initialize(
                 section.getString("url"),  section.getString("username"), section.getString("password"),
-                new File(this.getConfig().getString("template-island")).toPath()
+                new File(this.getConfig().getString("template-island"))
         );
     }
 

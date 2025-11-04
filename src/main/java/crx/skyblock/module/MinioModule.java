@@ -7,6 +7,7 @@ import crx.skyblock.service.minio.MinioConnectionServiceImpl;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.nio.file.Path;
 
 @Slf4j
@@ -17,7 +18,7 @@ public class MinioModule {
     @Getter
     private IslandsService islandManagerService;
 
-    public void initialize(String url, String username, String password, Path templateIsland) {
+    public void initialize(String url, String username, String password, File templateIsland) {
         try {
             this.minioService = new MinioConnectionServiceImpl(url, username, password);
             this.islandManagerService = new IslandsServiceImpl(this.minioService, templateIsland);
