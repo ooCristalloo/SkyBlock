@@ -25,6 +25,7 @@ public class FileUtil {
                 for(File f : Objects.requireNonNull(file.listFiles())) {
                     delete(f);
                 }
+                file.delete();
             } else {
                 file.delete();
             }

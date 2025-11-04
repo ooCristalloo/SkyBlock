@@ -2,6 +2,7 @@ package crx.skyblock.service.minio;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.level.Level;
 import crx.skyblock.Loader;
 import crx.skyblock.util.FileUtil;
 import crx.skyblock.util.GetterInterface;
@@ -51,6 +52,7 @@ public class IslandsServiceImpl implements IslandsService, GetterInterface {
     @Override
     public boolean createIsland(String islandName) {
         try {
+            FileUtil.delete(new File(worlds, islandName));
             FileUtil.copy(this.templateIsland, new File(worlds, islandName));
             return true;
         } catch (Exception e) {
@@ -64,9 +66,6 @@ public class IslandsServiceImpl implements IslandsService, GetterInterface {
         Path targetFolder = new File(worlds, islandName).toPath();
 
         try {
-            Files.createDirectories(targetFolder);
-            Files.createDirectories(targetFolder);
-
             Iterable<Result<Item>> results = minioService.getConnection().listObjects(
                     ListObjectsArgs.builder()
                             .bucket("island")
@@ -74,6 +73,8 @@ public class IslandsServiceImpl implements IslandsService, GetterInterface {
                             .recursive(true)
                             .build()
             );
+
+            FileUtil.delete(targetFolder.toFile());
 
             for (Result<Item> result : results) {
                 Item item = result.get();
@@ -102,8 +103,8 @@ public class IslandsServiceImpl implements IslandsService, GetterInterface {
     @Override
     public void uploadIsland(String islandName) {
         CompletableFuture.runAsync(() -> {
-            Server.getInstance().getLevelByName(islandName).save(true);
             Server.getInstance().getScheduler().scheduleDelayedTask(Loader.getInstance(), () -> {
+                Server.getInstance().getLevelByName(islandName).unload(true);
                 File targetFolder = new File(worlds, islandName);
 
                 if (targetFolder.exists() && targetFolder.isDirectory()) {
@@ -111,7 +112,6 @@ public class IslandsServiceImpl implements IslandsService, GetterInterface {
                         Files.walk(targetFolder.toPath())
                                 .filter(Files::isRegularFile)
                                 .forEach(file -> uploadFileToMinio(file, targetFolder.toPath(), islandName));
-
                         FileUtil.delete(targetFolder);
                     } catch (IOException e) {
                         log.error("Island failed to upload island {}", islandName, e);
