@@ -4,7 +4,6 @@ import lombok.Getter;
 
 import java.util.UUID;
 
-
 //открые чанки
 @Getter
 public class Profile {

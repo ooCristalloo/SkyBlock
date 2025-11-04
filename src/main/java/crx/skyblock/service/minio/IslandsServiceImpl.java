@@ -23,6 +23,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 public class IslandsServiceImpl implements IslandsService, GetterInterface {
+
     private static final File worlds = new File("worlds");
     
     @Getter
@@ -121,7 +122,6 @@ public class IslandsServiceImpl implements IslandsService, GetterInterface {
                 }
             }, 5);
         });
-
     }
 
     private void uploadFileToMinio(Path file, Path baseFolder, String islandName) {

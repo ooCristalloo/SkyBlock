@@ -2,10 +2,12 @@ package crx.skyblock;
 
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.ConfigSection;
+import crx.sbdata.player.manager.PlayerAdditionManager;
 import crx.skyblock.listener.ChatListener;
 import crx.skyblock.listener.ConnectionListener;
 import crx.skyblock.module.MinioModule;
 import crx.skyblock.module.NatsModule;
+import crx.skyblock.player.PlayerGroupAddition;
 import lombok.Getter;
 
 import java.io.File;
@@ -31,6 +33,8 @@ public class Loader extends PluginBase {
         this.initNats();
         this.initMinio();
         this.initHandlers();
+
+        PlayerAdditionManager.registerPlayerAddition(PlayerGroupAddition.class, this);
     }
 
     private void initNats(){

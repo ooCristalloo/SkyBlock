@@ -62,7 +62,7 @@
         <dependency>
             <groupId>com.koshakmine</groupId>
             <artifactId>Lumi</artifactId>
-            <version>1.3.0-SNAPSHOT</version>
+            <version>1.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -124,6 +124,13 @@
             <groupId>com.github.MEFRREEX</groupId>
             <artifactId>JOOQConnector</artifactId>
             <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>crx.sbdata</groupId>
+            <artifactId>SBData</artifactId>
+            <version>1.1</version>
+            <systemPath>${basedir}/src/lib/SBData-1.1.jar</systemPath>
+            <scope>system</scope>
         </dependency>
     </dependencies>
 

@@ -3,6 +3,7 @@ package crx.skyblock.service.minio;
 import cn.nukkit.Player;
 
 public interface IslandsService {
+
     void connectionPlayer(Player player);
 
     boolean createIsland(String islandName);

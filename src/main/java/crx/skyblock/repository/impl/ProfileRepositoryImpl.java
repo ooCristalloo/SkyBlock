@@ -14,6 +14,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 
 public class ProfileRepositoryImpl implements ProfileRepository {
+
     private final IDatabase database;
     private final Table<?> table;
 
