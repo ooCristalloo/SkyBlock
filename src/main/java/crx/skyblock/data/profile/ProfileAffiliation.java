@@ -8,6 +8,7 @@ import java.util.UUID;
 
 @Getter
 public class ProfileAffiliation {
+
     private final UUID profile;
     private final StatusPlayerProfile statusPlayerProfile;
     private final IPlayer player;
@@ -17,4 +18,5 @@ public class ProfileAffiliation {
         this.statusPlayerProfile = statusPlayerProfile;
         this.player = player;
     }
+
 }

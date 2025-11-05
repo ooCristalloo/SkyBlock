@@ -44,6 +44,7 @@ public class Loader extends PluginBase {
 
     private void initMinio(){
         final ConfigSection section = this.getConfig().getSection("minio");
+
         this.minioModule = new MinioModule();
         this.minioModule.initialize(
                 section.getString("url"),  section.getString("username"), section.getString("password"),
