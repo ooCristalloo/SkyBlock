@@ -15,7 +15,6 @@ public interface ProfileService {
 
     CompletableFuture<Profile> createProfile(String name, Player player);
 
-    CompletableFuture<List<ProfileAffiliation>> getProfiles(Player player);
 
     void onJoin(Player player);
 

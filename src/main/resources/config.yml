@@ -4,3 +4,12 @@ minio:
   url: "http://172.17.0.2:9000"
   username: "minio_root"
   password: "minio_password"
+
+profile:
+  type: "sqlite" # sqlite or mysql
+  database: "database.db"
+
+  # only mysql
+  host: "",
+  username: ""
+  password: ""
