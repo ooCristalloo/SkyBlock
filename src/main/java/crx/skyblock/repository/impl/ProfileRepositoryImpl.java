@@ -32,7 +32,7 @@ public class ProfileRepositoryImpl implements ProfileRepository {
     }
 
     private Profile getProfile(Record record) {
-        return new Profile(record.getValue("name", String.class), UUID.fromString(record.getValue("uuid", String.class)));
+        return new Profile(UUID.fromString(record.getValue("uuid", String.class)), record.getValue("name", String.class));
     }
 
     @Override
@@ -57,12 +57,12 @@ public class ProfileRepositoryImpl implements ProfileRepository {
         return database.getConnection().thenAcceptAsync(connection -> {
             int updatedRows = DSL.using(connection).update(table)
                     .set(DSL.field("name"), profile.getName())
-                    .where(DSL.field("uuid").eq(profile.getUuid()))
+                    .where(DSL.field("uuid").eq(profile.getProfileUuid()))
                     .execute();
             if (updatedRows == 0) {
                 DSL.using(connection).insertInto(table)
                         .set(DSL.field("name"), profile.getName())
-                        .set(DSL.field("uuid"), profile.getUuid())
+                        .set(DSL.field("uuid"), profile.getProfileUuid())
                         .execute();
             }
         });

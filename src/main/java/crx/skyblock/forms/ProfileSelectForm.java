@@ -4,7 +4,6 @@ import cn.nukkit.Player;
 import com.formconstructor.form.SimpleForm;
 import crx.skyblock.data.profile.Profile;
 import crx.skyblock.player.PlayerGroupAddition;
-import crx.skyblock.player.ProfilesData;
 
 import java.util.ArrayList;
 import java.util.UUID;

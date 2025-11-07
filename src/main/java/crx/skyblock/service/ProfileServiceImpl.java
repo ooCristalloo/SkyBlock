@@ -11,6 +11,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ProfileServiceImpl implements ProfileService {
+
     private final ProfileRepository profileRepository;
 
     private final Map<UUID, Profile> profilesCache = new ConcurrentHashMap<>();
