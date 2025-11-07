@@ -4,6 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import crx.sbdata.player.PlayerInterface;
 import crx.sbdata.player.annotation.*;
+import crx.skyblock.data.profile.Profile;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -57,9 +58,9 @@ public interface PlayerGroupAddition extends PlayerInterface {
     @PlayerSetter(name = "tokens")
     void setTokens(Integer tokens);
 
-    default ArrayList<ProfilesData> getAllProfiles(){
+    default ArrayList<Profile> getAllProfiles(){
         Object objectProfiles = this.getProfiles();
-        ArrayList<ProfilesData> profiles = new ArrayList<>();
+        ArrayList<Profile> profiles = new ArrayList<>();
 
         if(objectProfiles == null){
             return profiles;
@@ -70,14 +71,14 @@ public interface PlayerGroupAddition extends PlayerInterface {
             Map<UUID, String> profilesMap = gson.fromJson(json, type);
 
             for(Map.Entry<UUID, String> entry : profilesMap.entrySet()){
-                profiles.add(new ProfilesData(entry.getKey(), entry.getValue()));
+                profiles.add(new Profile(entry.getKey(), entry.getValue()));
             }
 
             return profiles;
         }
     }
 
-    default void addProfile(ProfilesData profile){
+    default void addProfile(Profile profile){
         Object objectProfiles = this.getProfiles();
         String json = (String) objectProfiles;
 
@@ -89,13 +90,13 @@ public interface PlayerGroupAddition extends PlayerInterface {
             profilesMap = new HashMap<>();
         }
 
-        profilesMap.put(profile.getProfileId(), profile.getName());
+        profilesMap.put(profile.getProfileUuid(), profile.getName());
 
         String newJson = gson.toJson(profilesMap);
         this.setProfiles(newJson);
     }
 
-    default void removeProfile(ProfilesData profile){
+    default void removeProfile(Profile profile){
         Object objectProfiles = this.getProfiles();
         String json = (String) objectProfiles;
 
@@ -104,7 +105,7 @@ public interface PlayerGroupAddition extends PlayerInterface {
         Map<UUID, String> profilesMap = gson.fromJson(json, type);
 
         if(profilesMap != null) {
-            profilesMap.remove(profile.getProfileId());
+            profilesMap.remove(profile.getProfileUuid());
             String newJson = gson.toJson(profilesMap);
             this.setProfiles(newJson);
         }
