@@ -56,7 +56,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public void onJoin(Player player) {
         final PlayerGroupAddition playerGroupAddition = (PlayerGroupAddition) player;
-        for(Profile profile : playerGroupAddition.getAllProfiles()) {
+        for(Profile profile : playerGroupAddition.getAllPlayerProfiles()) {
             profilesCache.put(profile.getProfileUuid(), profile);
         }
     }
@@ -64,7 +64,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public void onLeave(Player player) {
         final PlayerGroupAddition playerGroupAddition = (PlayerGroupAddition) player;
-        for(Profile profile : playerGroupAddition.getAllProfiles()) {
+        for(Profile profile : playerGroupAddition.getAllPlayerProfiles()) {
             profilesCache.remove(profile.getProfileUuid());
         }
     }

@@ -32,6 +32,7 @@ public class Loader extends PluginBase {
     @Override
     public void onLoad() {
         this.saveDefaultConfig();
+        PlayerAdditionManager.registerPlayerAddition(PlayerGroupAddition.class, this);
     }
 
     @Override
@@ -43,8 +44,6 @@ public class Loader extends PluginBase {
         this.initHandlers();
 
         this.profileService = new ProfileServiceImpl(new ProfileRepositoryImpl(getDatabase(this.getConfig().getSection("profile"))));
-
-        PlayerAdditionManager.registerPlayerAddition(PlayerGroupAddition.class, this);
     }
 
     @Override

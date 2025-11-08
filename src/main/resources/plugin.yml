@@ -5,7 +5,7 @@ author: CristalixBE
 main: crx.skyblock.Loader
 
 depend:
+  - "SBData"
   - "Sunny"
   - "FormConstructor"
   - "JOOQConnector"
-  - "SBData"

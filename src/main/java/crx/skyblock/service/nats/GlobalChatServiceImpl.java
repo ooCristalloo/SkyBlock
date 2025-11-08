@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class GlobalChatServiceImpl implements GlobalChatService {
+
     private static final String NATS_SUBSCRIBE_ID = "skyblock.global.chat";
 
     private final NatsConnectionService natsService;

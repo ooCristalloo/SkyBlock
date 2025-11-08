@@ -2,7 +2,6 @@ package crx.skyblock.service.minio;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
-import cn.nukkit.level.Level;
 import crx.skyblock.Loader;
 import crx.skyblock.util.FileUtil;
 import crx.skyblock.util.GetterInterface;
@@ -18,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
@@ -35,17 +35,17 @@ public class IslandsServiceImpl implements IslandsService, GetterInterface {
         this.templateIsland = templateIsland;
     }
 
-    public void connectionPlayer(Player player) {
-        if(this.isHaveIsland(player.getName())){
-            this.downloadIsland(player.getName());
+    public void connectionPlayer(Player player, UUID uuid) {
+        if(this.isHaveIsland(uuid.toString())){
+            this.downloadIsland(uuid.toString());
         }else{
-            boolean isCreate = this.createIsland(player.getName());
+            boolean isCreate = this.createIsland(uuid.toString());
 
             if(isCreate){
-                Server.getInstance().loadLevel(player.getName());
+                Server.getInstance().loadLevel(uuid.toString());
             }
 
-            log.info("Island {} not found, create new island", player.getName());
+            log.info("Island {} not found, create new island", player.getName() + " " + uuid.toString());
         }
     }
 
